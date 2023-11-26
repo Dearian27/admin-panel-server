@@ -6,7 +6,7 @@ export const signUp = async(req, res) => {
   const { password, name, email } = req.body;
 
   if( !email || !password  || !name) { 
-    return res.json({ message: 'Please provide credentials.'});
+    return res.status(403).json({ message: 'Please provide credentials.'});
   }
   try {
     const checkUser = await User.findOne({email});

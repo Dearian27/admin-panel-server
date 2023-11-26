@@ -16,14 +16,13 @@ export const signUp = async(req, res) => {
     }
     const user = new User({email, password: hashedPassword, name});
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
-    console.log(user._doc)
-    const { userPassword, ...other } = user._doc;
-    
+    const { password:userPassword, ...other } = user._doc;
+    console.log(other);    
     await user.save();
-    return res.json({ message: 'User created successfully.', other, token });
+    return res.status(200).json({ message: 'User created successfully.', user: other, token });
   } catch (err) {
     console.log(err);
-    return res.json({ message: "Error creating user." });
+    return res.status(403).json({ message: "Error creating user." });
   }
   
 }

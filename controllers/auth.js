@@ -9,6 +9,11 @@ export const signUp = async(req, res) => {
     return res.json({ message: 'Please provide credentials.'});
   }
   try {
+    const checkUser = await User.findOne({email});
+    if(checkUser) {
+      return res.status(403).json({ message: 'User already exists.' });
+    }
+
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, salt);
     if(!hashedPassword) {
@@ -33,7 +38,7 @@ export const signIn = async(req, res) => {
   if( !email || !password) { 
     return res.json({ message: 'Please provide credentials.'});
   }
-  try {
+  try {    
     const user = await User.findOne({email});
     const passwordMatch = bcrypt.compareSync(password, user.password);
     if(!passwordMatch) {

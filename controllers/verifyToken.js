@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { User } from '../models/user.js';
+import User from '../models/user.js';
 
 export const verifyToken = async (req, res, next) => {
   const token = (req.headers.authorization || '').replace(/Bearer\s?/, '');
@@ -12,7 +12,6 @@ export const verifyToken = async (req, res, next) => {
   if(!user) {
     return res.status(401).json({message: 'Ви не зареєстровані.'});
   }
-  req.isTeacher = user.status === 'teacher' || user.status === 'admin';
   req.isAdmin = user.status === 'admin';
   next();
 }

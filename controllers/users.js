@@ -35,3 +35,16 @@ export const deleteUser = async(req, res) => {
     return res.status(500).json({ message: 'Something went wrong' });
   }
 }
+
+export const checkUser = async(req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if(!user) {
+      return res.status(403).json({ message: 'Not authorized'});
+    }
+    const { password, ...other } = user._doc;
+    return res.status(200).json({ message: 'User exists', user: other});
+  } catch(error) {
+    return res.status(403).json({ message: 'Not authorized'});
+  }
+}

@@ -36,13 +36,13 @@ export const signIn = async(req, res) => {
   const { password, email } = req.body;
 
   if( !email || !password) { 
-    return res.json({ message: 'Please provide credentials.'});
+    return res.status(403).json({ message: 'Please provide credentials.'});
   }
   try {    
     const user = await User.findOne({email});
     const passwordMatch = bcrypt.compareSync(password, user.password);
     if(!passwordMatch) {
-      return res.json({ message: 'Wrong password.' });
+      return res.status(403).json({ message: 'Wrong password.' });
     }
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
     const { password:userPassword, ...other } = user._doc;

@@ -1,7 +1,8 @@
 
 
 export const createUser = (req, res) => {
-
+  const { password } = req.body;
+  return res.json({ message: 'fdsfda', password});
 }
 
 export const getUsers = (req, res) => {
